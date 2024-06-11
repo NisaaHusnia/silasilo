@@ -25,7 +25,7 @@ export const confirmAlert = async (confirmButtonText: string) => {
     cancelButtonColor: "#d33",
     confirmButtonColor: "#3085d6",
     confirmButtonText: confirmButtonText,
-    cancelButtonText: "No, cancel!",
+    cancelButtonText: "Tidak, batalkan!",
   });
 
   return confirmed.isConfirmed;

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,42 +7,49 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import authInstance from "@/instances/auth";
 import { errorAlert, successAlert } from "@/utils/sweetalert2";
 import { Input } from "@/components/ui/input";
-import AuthLayout from "@/components/layouts/Auth";
+import farmInstance from "@/instances/farm";
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Name harus di isi" }),
-  email: z.string({ required_error: "Email harus di isi" }).email(),
-  username: z.string({ required_error: "Username harus di isi" }),
-  address: z.string({ required_error: "Alamat harus di isi" }),
-  phone_number: z.string({ required_error: "Nomor telepon harus di isi" }),
-  password: z.string({ required_error: "Password harus di isi" }),
+  farm_name: z.string({ required_error: "Nama peternakan harus di isi" }),
+  location: z.string({ required_error: "Lokasi harus di isi" }),
+  creation_date: z.string({ required_error: "Tanggal pembuatan harus di isi" }),
+  creation_time: z.string({ required_error: "Waktu pembuatan harus di isi" }),
+  materials: z.string({ required_error: "Bahan baku harus di isi" }),
 });
 
-const LoginForm = () => {
-  const { push } = useRouter();
+const ProcessPage = () => {
   const [loading, setLoading] = useState(false);
+
+  // ambil token
+  const session: any = useSession();
+  if (session.status === "loading") {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+  const token: any = session.data?.token;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      username: "",
-      address: "",
-      phone_number: "",
-      password: "",
+      farm_name: "",
+      location: "",
+      creation_date: "",
+      creation_time: "",
+      materials: "",
     },
   });
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
     try {
-      const response = await authInstance.register(data);
+      const response = await farmInstance.add(data, token);
       successAlert(response.data.message);
-      push("/auth/login");
     } catch {
       errorAlert("Internal Server Error");
     } finally {
@@ -52,18 +58,19 @@ const LoginForm = () => {
   };
 
   return (
-    <AuthLayout title="Daftar" link="/auth/login" linkText="Sudah punya akun?">
+    <div className="flex flex-col gap-4 justify-center items-center min-h-screen">
+      <h1 className="text-3xl font-bold">Daftar proses</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="max-w-md w-full flex flex-col bg-accent rounded-lg p-4 gap-1">
           <FormField
             control={form.control}
-            name="name"
+            name="farm_name"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Nama</FormLabel>
+                  <FormLabel>Nama peternakan</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nama" type="text" {...field} />
+                    <Input placeholder="peternakan alam" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,13 +79,13 @@ const LoginForm = () => {
           />
           <FormField
             control={form.control}
-            name="email"
+            name="location"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Lokasi</FormLabel>
                   <FormControl>
-                    <Input placeholder="contoh@gmail.com" type="text" {...field} />
+                    <Input placeholder="Jl. Kediri" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,13 +94,13 @@ const LoginForm = () => {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="creation_date"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Tanggal Pembuatan</FormLabel>
                   <FormControl>
-                    <Input placeholder="John" type="text" {...field} />
+                    <Input placeholder="tanggal" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,13 +109,13 @@ const LoginForm = () => {
           />
           <FormField
             control={form.control}
-            name="address"
+            name="creation_time"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Alamat</FormLabel>
+                  <FormLabel>Waktu pembuatan</FormLabel>
                   <FormControl>
-                    <Input placeholder="Kediri" type="text" {...field} />
+                    <Input placeholder="waktu" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -117,28 +124,13 @@ const LoginForm = () => {
           />
           <FormField
             control={form.control}
-            name="phone_number"
+            name="materials"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Nomor telepon</FormLabel>
+                  <FormLabel>Bahan baku</FormLabel>
                   <FormControl>
-                    <Input placeholder="08xxxxxxxxxx" type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" type="password" {...field} />
+                    <Input placeholder="jagung" type="txt" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -157,8 +149,8 @@ const LoginForm = () => {
           )}
         </form>
       </Form>
-    </AuthLayout>
+    </div>
   );
 };
 
-export default LoginForm;
+export default ProcessPage;

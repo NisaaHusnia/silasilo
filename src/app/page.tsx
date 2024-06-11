@@ -5,7 +5,7 @@ import { TiArrowRightOutline } from "react-icons/ti";
 
 export default function Home() {
   return (
-    <section className="min-h-screen flex flex-col justify-between py-10 sm:py-32 items-center w-full bg-gradient-to-br from-[#f6e7ae] to-[#897546]">
+    <section className="min-h-screen flex flex-col justify-between py-14 sm:py-36 items-center w-full bg-gradient-to-br from-[#f6e7ae] to-[#897546]">
       <div className="flex gap-2">
         <Image src="/images/logo.jpg" alt="Logo" width={30} height={30} />
         <h2 className="text-2xl md:text-3xl font-semibold">Silasilo Monitor</h2>

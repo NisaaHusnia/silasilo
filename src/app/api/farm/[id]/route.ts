@@ -6,9 +6,6 @@ export async function GET(request: NextRequest) {
   try {
     const id: any = request.url.split("/").pop();
 
-    console.log(id);
-    
-
     const data = await getDataByField("farms", "user_id", id);
     return NextResponse.json(
       {
@@ -32,11 +29,12 @@ export async function POST(request: NextRequest) {
   try {
     const token: any = request.headers.get("authorization")?.split(" ")[1];
     const decoded: any = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
+    const id: any = request.url.split("/").pop();
 
     if (decoded) {
       const data = await request.json();
 
-      data["user_id"] = decoded.id;
+      data["user_id"] = id;
 
       const status = await addData("farms", data);
       if (status) {

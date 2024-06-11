@@ -7,10 +7,23 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
 import { FaPlus } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 
 const DashboardPage = () => {
-  const { data, error, isLoading } = useSWR("/api/farm", fetcher);
+  const session: any = useSession();
 
+  // Panggil useSWR di luar kondisi apapun
+  const id = session?.data?.user?.id;
+  const { data, error, isLoading } = useSWR(id ? `/api/farm/${id}` : null, fetcher);
+
+  if (session.status === "loading" || isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">

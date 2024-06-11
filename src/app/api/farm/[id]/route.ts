@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { addData, getData } from "@/lib/firebase/service";
+import { addData, getData, getDataByField } from "@/lib/firebase/service";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const data = await getData("farms");
+    const id: any = request.url.split("/").pop();
+
+    console.log(id);
+    
+
+    const data = await getDataByField("farms", "user_id", id);
     return NextResponse.json(
       {
         success: true,
@@ -30,6 +35,8 @@ export async function POST(request: NextRequest) {
 
     if (decoded) {
       const data = await request.json();
+
+      data["user_id"] = decoded.id;
 
       const status = await addData("farms", data);
       if (status) {

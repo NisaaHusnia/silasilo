@@ -59,7 +59,7 @@ const ProcessPage = () => {
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center min-h-screen">
-      <h1 className="text-3xl font-bold">Daftar proses</h1>
+      <h1 className="text-3xl font-bold">Tambah proses</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="max-w-md w-full flex flex-col bg-accent rounded-lg p-4 gap-1">
           <FormField
@@ -100,7 +100,7 @@ const ProcessPage = () => {
                 <FormItem>
                   <FormLabel>Tanggal Pembuatan</FormLabel>
                   <FormControl>
-                    <Input placeholder="tanggal" type="text" {...field} />
+                    <Input type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,7 +115,7 @@ const ProcessPage = () => {
                 <FormItem>
                   <FormLabel>Waktu pembuatan</FormLabel>
                   <FormControl>
-                    <Input placeholder="waktu" type="text" {...field} />
+                    <Input type="time" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

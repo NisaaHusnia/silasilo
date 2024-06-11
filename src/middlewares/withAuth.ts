@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse, NextFetchEvent, NextMiddleware } from "next/server";
 
 const authPage = ["auth"];
-const userPage = ["dashboard"];
+const userPage = ["dashboard", "process", "result"];
 
 export default function withAuth(middleware: NextMiddleware, requireAuth: string[] = []) {
   return async (req: NextRequest, next: NextFetchEvent) => {

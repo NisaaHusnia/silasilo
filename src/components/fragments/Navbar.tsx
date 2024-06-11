@@ -8,6 +8,7 @@ import { confirmAlert } from "@/utils/sweetalert2";
 import { FaPlus } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
 import Image from "next/image";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const links = [
   { name: "Dashboard", path: "dashboard", icon: <TbLayoutDashboardFilled className="text-lg text-white" /> },
@@ -16,7 +17,7 @@ const links = [
 ];
 
 const Navbar = () => {
-  const { data: sessionData, status: sessionStatus } = useSession();
+  const session: any = useSession();
   const pathname = usePathname().split("/")[1];
 
   const handleSignOut = async () => {
@@ -24,15 +25,13 @@ const Navbar = () => {
     if (confirmed) signOut();
   };
 
-  if (sessionStatus === "loading") {
+  if (session.status === "loading") {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     );
   }
-
-  const user = sessionData?.user;
 
   return (
     <div className="flex flex-col justify-between w-full h-screen py-4">
@@ -52,7 +51,9 @@ const Navbar = () => {
         })}
       </div>
       <Button variant="destructive" onClick={handleSignOut}>
-        <TbLogout className="text-lg" />
+        <span>
+          <TbLogout className="text-lg" />
+        </span>
         <p className="ml-2 font-semibold hidden sm:flex">Keluar</p>
       </Button>
     </div>

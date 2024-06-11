@@ -22,6 +22,17 @@ const formSchema = z.object({
 
 const ProcessPage = () => {
   const [loading, setLoading] = useState(false);
+  
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        farm_name: "",
+        location: "",
+        creation_date: "",
+        creation_time: "",
+        materials: "",
+      },
+    });
 
   // ambil token
   const session: any = useSession();
@@ -33,17 +44,6 @@ const ProcessPage = () => {
     );
   }
   const token: any = session.data?.token;
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      farm_name: "",
-      location: "",
-      creation_date: "",
-      creation_time: "",
-      materials: "",
-    },
-  });
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);

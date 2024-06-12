@@ -23,7 +23,7 @@ const DashboardPage = () => {
       </div>
     );
   }
-  
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -33,7 +33,9 @@ const DashboardPage = () => {
   }
 
   if (!isLoading) {
-    if (data?.data?.length === 0) {
+    if (data?.data) {
+      return <DashboardView data={data?.data} />;
+    } else {
       return (
         <div className="flex flex-col justify-center items-center h-screen">
           <h1 className="text-3xl font-bold">
@@ -45,8 +47,6 @@ const DashboardPage = () => {
           </Button>
         </div>
       );
-    } else {
-      return <DashboardView data={data?.data} />;
     }
   }
 };

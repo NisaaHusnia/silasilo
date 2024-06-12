@@ -1,5 +1,5 @@
 import { addDoc, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
-import app from "./init";
+import {app} from "./init";
 
 const firestore = getFirestore(app);
 
@@ -43,8 +43,8 @@ export async function getDataByField(collectionName: string, fieldName: string, 
 
 export async function addData(collectionName: string, data: any) {
   try {
-    await addDoc(collection(firestore, collectionName), data);
-    return true;
+    const result = await addDoc(collection(firestore, collectionName), data);
+    return result;
   } catch (error) {
     return false;
   }

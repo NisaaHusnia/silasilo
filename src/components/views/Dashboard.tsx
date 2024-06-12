@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const DashboardView = ({ data }: any) => {
   return (
@@ -16,8 +16,11 @@ const DashboardView = ({ data }: any) => {
               <Item>Waktu pembuatan : {item.creation_time}</Item>
               <Item>Bahan baku : {item.materials}</Item>
               <Item>Suhu : {item.temperature}</Item>
-              <Item>Nilai pH : {item.ph_level}</Item>
+              <Item>Nilai pH : {item.ph}</Item>
             </CardContent>
+            <CardFooter>
+              <Item>ID : {item.id}</Item>
+            </CardFooter>
           </Card>
         ))}
       </div>

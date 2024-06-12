@@ -12,7 +12,7 @@ export type Farm = {
   creation_time: string;
   materials: string;
   temperature: string;
-  ph_level: string;
+  ph: string;
   grade: string;
 };
 

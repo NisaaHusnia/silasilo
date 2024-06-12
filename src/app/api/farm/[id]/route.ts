@@ -1,16 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { addData, getData, getDataByField } from "@/lib/firebase/service";
+import { addData, getDataByField } from "@/lib/firebase/service";
+import { addDataRealtime, getDataRealtime } from "@/lib/firebase/serviceRealtime";
 
 export async function GET(request: NextRequest) {
   try {
     const id: any = request.url.split("/").pop();
 
-    const data = await getDataByField("farms", "user_id", id);
+    const data: any = await getDataByField("farms", "user_id", id);
+
+    const mergedData = await Promise.all(
+      data.map(async (farm: any) => {
+        const dataRealtime = await getDataRealtime(farm.id);
+        return { ...farm, ...dataRealtime };
+      })
+    );
+
     return NextResponse.json(
       {
         success: true,
-        data: data,
+        data: mergedData,
       },
       { status: 200 }
     );
@@ -36,8 +45,15 @@ export async function POST(request: NextRequest) {
 
       data["user_id"] = id;
 
-      const status = await addData("farms", data);
-      if (status) {
+      const dataRealtime = {
+        temperature: 0,
+        ph: 0,
+      };
+
+      const result: any = await addData("farms", data);
+      const statusRealtime = await addDataRealtime(result.id, dataRealtime);
+
+      if (result && statusRealtime) {
         return NextResponse.json(
           {
             success: true,

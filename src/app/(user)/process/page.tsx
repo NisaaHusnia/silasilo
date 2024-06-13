@@ -11,28 +11,30 @@ import { errorAlert, successAlert } from "@/utils/sweetalert2";
 import { Input } from "@/components/ui/input";
 import farmInstance from "@/instances/farm";
 import { useSession } from "next-auth/react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   farm_name: z.string({ required_error: "Nama peternakan harus di isi" }),
   location: z.string({ required_error: "Lokasi harus di isi" }),
   creation_date: z.string({ required_error: "Tanggal pembuatan harus di isi" }),
   creation_time: z.string({ required_error: "Waktu pembuatan harus di isi" }),
-  materials: z.string({ required_error: "Bahan baku harus di isi" }),
+  material: z.enum(["bongkil jagung", "rumput gajah"], { required_error: "Bahan baku harus di isi" }),
 });
 
 const ProcessPage = () => {
   const [loading, setLoading] = useState(false);
-  
-    const form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        farm_name: "",
-        location: "",
-        creation_date: "",
-        creation_time: "",
-        materials: "",
-      },
-    });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      farm_name: "",
+      location: "",
+      creation_date: "",
+      creation_time: "",
+      material: "bongkil jagung",
+    },
+  });
 
   // ambil token
   const session: any = useSession();
@@ -72,7 +74,7 @@ const ProcessPage = () => {
                 <FormItem>
                   <FormLabel>Nama peternakan</FormLabel>
                   <FormControl>
-                    <Input placeholder="peternakan alam" type="text" {...field} />
+                    <Input placeholder="Peternakan" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,18 +128,29 @@ const ProcessPage = () => {
           />
           <FormField
             control={form.control}
-            name="materials"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Bahan baku</FormLabel>
-                  <FormControl>
-                    <Input placeholder="jagung" type="txt" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            name="material"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Bahan baku</FormLabel>
+                <FormControl className="bg-[#f5f5f5] p-2 rounded">
+                  <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="bongkil jagung" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Bongkil jagung</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="rumput gajah" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Rumput gajah</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           {loading ? (
             <Button variant="secondary" disabled className="mt-3">

@@ -34,7 +34,7 @@ export const columns: ColumnDef<Farm>[] = [
     header: "Waktu Produksi",
   },
   {
-    accessorKey: "materials",
+    accessorKey: "material",
     header: "Bahan Baku",
   },
   {
@@ -42,7 +42,7 @@ export const columns: ColumnDef<Farm>[] = [
     header: "Suhu",
   },
   {
-    accessorKey: "ph_level",
+    accessorKey: "ph",
     header: "Nilai pH",
   },
   {

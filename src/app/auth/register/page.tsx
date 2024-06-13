@@ -15,10 +15,8 @@ import AuthLayout from "@/components/layouts/Auth";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Name harus di isi" }),
-  email: z.string({ required_error: "Email harus di isi" }).email(),
   username: z.string({ required_error: "Username harus di isi" }),
   address: z.string({ required_error: "Alamat harus di isi" }),
-  phone_number: z.string({ required_error: "Nomor telepon harus di isi" }),
   password: z.string({ required_error: "Password harus di isi" }),
 });
 
@@ -30,10 +28,8 @@ const LoginForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "",
       username: "",
       address: "",
-      phone_number: "",
       password: "",
     },
   });
@@ -72,21 +68,6 @@ const LoginForm = () => {
           />
           <FormField
             control={form.control}
-            name="email"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="contoh@gmail.com" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
             name="username"
             render={({ field }) => {
               return (
@@ -109,21 +90,6 @@ const LoginForm = () => {
                   <FormLabel>Alamat</FormLabel>
                   <FormControl>
                     <Input placeholder="Kediri" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="phone_number"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Nomor telepon</FormLabel>
-                  <FormControl>
-                    <Input placeholder="08xxxxxxxxxx" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

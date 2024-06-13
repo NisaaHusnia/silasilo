@@ -6,6 +6,7 @@ import { DataTable } from "./data-table";
 import useSWR from "swr";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { getGrade } from "@/utils";
 
 export default function ResultPage() {
   const session: any = useSession();
@@ -13,6 +14,10 @@ export default function ResultPage() {
   // Panggil useSWR di luar kondisi apapun
   const id = session?.data?.user?.id;
   const { data, error, isLoading } = useSWR(id ? `/api/farm/${id}` : null, fetcher);
+
+  data?.data.map((item: any) => {
+    item['grade'] = getGrade(item.temperature, item.ph);
+  })
 
   if (session.status === "loading" || isLoading) {
     return (

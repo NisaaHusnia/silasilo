@@ -39,7 +39,7 @@ export const columns: ColumnDef<Farm>[] = [
   },
   {
     accessorKey: "temperature",
-    header: "Suhu",
+    header: "Suhu dan kelembapan",
   },
   {
     accessorKey: "ph",

@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import farmInstance from "@/instances/farm";
 import { useSession } from "next-auth/react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   farm_name: z.string({ required_error: "Nama peternakan harus di isi" }),

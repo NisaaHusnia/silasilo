@@ -7,9 +7,9 @@ export const getGrade = (ph: number) => {
     } else if (ph <= 7) {
       return "C (Rendah)";
     } else {
-      return "";
+      return "-";
     }
   } else {
-    return "";
+    return "-";
   }
 };

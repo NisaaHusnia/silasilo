@@ -9,7 +9,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({ columns, data=[] }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data = [] }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -23,7 +23,11 @@ export function DataTable<TData, TValue>({ columns, data=[] }: DataTableProps<TD
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                return <TableHead key={header.id} className="text-white">{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>;
+                return (
+                  <TableHead key={header.id} className="text-white text-center">
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                );
               })}
             </TableRow>
           ))}
@@ -31,7 +35,7 @@ export function DataTable<TData, TValue>({ columns, data=[] }: DataTableProps<TD
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="text-center">
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                 ))}

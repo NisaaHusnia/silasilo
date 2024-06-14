@@ -11,6 +11,7 @@ import Image from "next/image";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import logoImage from '../../../public/images/silasilo.png'
 
 const links = [
   { name: "Dashboard", path: "dashboard", icon: <TbLayoutDashboardFilled className="text-lg text-white" /> },
@@ -37,7 +38,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               <GiHamburgerMenu className="text-3xl cursor-pointer" onClick={() => setIsOpen(!isOpen)} />
             </div>
             <div className="flex justify-center">
-              <Image src="/images/logo.jpg" width={100} height={100} alt="logo" className="rounded-full mb-4" />
+              <Image src={logoImage} width={100} height={100} alt="logo" className="rounded-full mb-4" />
             </div>
             {links.map((link) => {
               return (

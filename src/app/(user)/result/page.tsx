@@ -16,7 +16,7 @@ export default function ResultPage() {
   const { data, error, isLoading } = useSWR(id ? `/api/farm/${id}` : null, fetcher);
 
   data?.data.map((item: any) => {
-    item['grade'] = getGrade(item.temperature, item.ph);
+    item['grade'] = getGrade(item.ph);
   })
 
   if (session.status === "loading" || isLoading) {

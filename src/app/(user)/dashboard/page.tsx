@@ -33,7 +33,7 @@ const DashboardPage = () => {
   }
 
   if (!isLoading) {
-    if (data?.data) {
+    if (data?.data.length > 0) {
       return <DashboardView data={data?.data} />;
     } else {
       return (

@@ -47,7 +47,7 @@ export const columns: ColumnDef<Farm>[] = [
   },
   {
     accessorKey: "ph",
-    header: "Nilai pH",
+    header: "pH",
   },
   {
     accessorKey: "grade",

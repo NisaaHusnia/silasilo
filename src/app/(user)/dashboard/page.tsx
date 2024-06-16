@@ -2,36 +2,27 @@
 
 import { Button } from "@/components/ui/button";
 import DashboardView from "@/components/views/Dashboard";
+import { fetcher } from "@/utils/fetcher";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import useSWR from "swr";
 import { FaPlus } from "react-icons/fa";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import instance from "@/lib/axios/instance";
-import { errorAlert } from "@/utils/sweetalert2";
 
 const DashboardPage = () => {
   const session: any = useSession();
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<any>([]);
 
+  // Panggil useSWR di luar kondisi apapun
   const id = session?.data?.user?.id;
+  const { data, error, isLoading } = useSWR(id ? `/api/farm/${id}` : null, fetcher);
 
-  useEffect(() => {
-    if (!id) return;
-    setIsLoading(true);
-    instance
-      .get(`/api/farm/${id}`)
-      .then((res) => {
-        setData(res.data.data);
-      })
-      .catch((err) => {
-        errorAlert("Internal Server Error");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [id]);
+  if (session.status === "loading" || isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -42,8 +33,8 @@ const DashboardPage = () => {
   }
 
   if (!isLoading) {
-    if (data.length > 0) {
-      return <DashboardView data={data} />;
+    if (data?.data.length > 0) {
+      return <DashboardView data={data?.data} />;
     } else {
       return (
         <div className="flex flex-col justify-center items-center h-screen">

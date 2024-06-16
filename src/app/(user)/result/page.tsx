@@ -17,6 +17,7 @@ export default function ResultPage() {
   const id = session?.data?.user?.id;
 
   useEffect(() => {
+    if (!id) return;
     setIsLoading(true);
     instance
       .get(`/api/farm/${id}`)
@@ -29,7 +30,7 @@ export default function ResultPage() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [id]);
 
   data.map((item: any) => {
     item["grade"] = getGrade(item.ph);

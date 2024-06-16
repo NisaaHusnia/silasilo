@@ -18,6 +18,7 @@ const DashboardPage = () => {
   const id = session?.data?.user?.id;
 
   useEffect(() => {
+    if (!id) return;
     setIsLoading(true);
     instance
       .get(`/api/farm/${id}`)
@@ -30,7 +31,7 @@ const DashboardPage = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [id]);
 
   if (isLoading) {
     return (

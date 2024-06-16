@@ -7,10 +7,10 @@ export async function GET(request: NextRequest) {
   try {
     const id: any = request.url.split("/").pop();
 
-    const data: any = await getDataByField("farms", "user_id", id);
+    // Menunggu kedua data siap sebelum dilakukan merger
+    const [data, dataRealtime] = await Promise.all([getDataByField("farms", "user_id", id), getDataRealtime("data")]);
 
-    const dataRealtime = await getDataRealtime("data");
-
+    // Melakukan merger data
     const mergedData = data.map((farm: any) => {
       if (dataRealtime[farm.id]) {
         return {
@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
       }
     });
 
+    // Mengembalikan response dengan data yang telah digabungkan
     return NextResponse.json(
       {
         success: true,
@@ -30,6 +31,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    // Jika terjadi error, mengembalikan response error
     return NextResponse.json(
       {
         success: false,
@@ -39,6 +41,7 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
 
 export async function POST(request: NextRequest) {
   try {

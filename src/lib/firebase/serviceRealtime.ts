@@ -4,7 +4,7 @@ import { database } from "./init";
 export const getDataRealtime = async (path: string) => {
   try {
     const dbRef = ref(database);
-    const snapshot = await get(child(dbRef, `data/${path}`));
+    const snapshot = await get(child(dbRef, `${path}`));
 
     if (snapshot.exists()) {
       return snapshot.val();

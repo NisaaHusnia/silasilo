@@ -9,14 +9,23 @@ export async function GET(request: NextRequest) {
 
     const data: any = await getDataByField("farms", "user_id", id);
 
-    const dataRealtime = await getDataRealtime("farm");
+    const dataRealtime = await getDataRealtime("data");
 
-    console.log(dataRealtime);
-    
+    const mergedData = data.map((farm: any) => {
+      if (dataRealtime[farm.id]) {
+        return {
+          ...farm,
+          ...dataRealtime[farm.id],
+        };
+      } else {
+        return farm;
+      }
+    });
+
     return NextResponse.json(
       {
         success: true,
-        data,
+        data: mergedData,
       },
       { status: 200 }
     );

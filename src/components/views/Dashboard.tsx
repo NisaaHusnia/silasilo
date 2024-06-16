@@ -22,7 +22,8 @@ const DashboardView = ({ data }: any) => {
               <Item>Tanggal pembuatan : {item.creation_date}</Item>
               <Item>Waktu pembuatan : {item.creation_time}</Item>
               <Item>Bahan baku : {item.material}</Item>
-              <Item>Suhu & kelembapan : {item.temperature}</Item>
+              <Item>Suhu : {item.temperature}</Item>
+              <Item>Kelembapan : {item.humadity}</Item>
               <Item>Nilai pH : {item.ph}</Item>
             </CardContent>
             <CardFooter>

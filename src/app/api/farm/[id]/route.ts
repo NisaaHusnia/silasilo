@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
     const mergedData = await Promise.all(
       data.map(async (farm: any) => {
-        const dataRealtime = await getDataRealtime(farm.id);
+        const dataRealtime = await getDataRealtime("sensor", farm.id);
         return { ...farm, ...dataRealtime };
       })
     );
@@ -46,12 +46,14 @@ export async function POST(request: NextRequest) {
       data["user_id"] = id;
 
       const result: any = await addData("farms", data);
+
       const dataRealtime = {
+        id: result.id,
         humadity: 0,
         temperature: 0,
         ph: 0,
       };
-      const statusRealtime = await addDataRealtime(result.id, dataRealtime);
+      const statusRealtime = await addDataRealtime("sensor", dataRealtime);
 
       if (result && statusRealtime) {
         return NextResponse.json(

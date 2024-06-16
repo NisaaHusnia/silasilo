@@ -1,10 +1,10 @@
 import { ref, get, child, set } from "firebase/database";
 import { database } from "./init";
 
-export const getDataRealtime = async (path: string, id: string) => {
+export const getDataRealtime = async (path: string) => {
   try {
     const dbRef = ref(database);
-    const snapshot = await get(child(dbRef, `${path}/${id}`));
+    const snapshot = await get(child(dbRef, `data/${path}`));
 
     if (snapshot.exists()) {
       return snapshot.val();

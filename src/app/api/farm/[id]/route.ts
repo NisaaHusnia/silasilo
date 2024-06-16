@@ -9,17 +9,14 @@ export async function GET(request: NextRequest) {
 
     const data: any = await getDataByField("farms", "user_id", id);
 
-    const mergedData = await Promise.all(
-      data.map(async (farm: any) => {
-        const dataRealtime = await getDataRealtime("sensor", farm.id);
-        return { ...farm, ...dataRealtime };
-      })
-    );
+    const dataRealtime = await getDataRealtime("farm");
 
+    console.log(dataRealtime);
+    
     return NextResponse.json(
       {
         success: true,
-        data: mergedData,
+        data,
       },
       { status: 200 }
     );
@@ -46,14 +43,12 @@ export async function POST(request: NextRequest) {
       data["user_id"] = id;
 
       const result: any = await addData("farms", data);
-
       const dataRealtime = {
-        id: result.id,
         humadity: 0,
         temperature: 0,
         ph: 0,
       };
-      const statusRealtime = await addDataRealtime("sensor", dataRealtime);
+      const statusRealtime = await addDataRealtime(result.id, dataRealtime);
 
       if (result && statusRealtime) {
         return NextResponse.json(

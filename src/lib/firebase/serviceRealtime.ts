@@ -19,7 +19,7 @@ export const getDataRealtime = async (path: string) => {
 export const addDataRealtime = async (path: string, data: any) => {
   try {
     const dbRef = ref(database);
-    await set(child(dbRef, `data/${path}`), data);
+    await set(child(dbRef, `${path}`), data);
     return true;
   } catch (error) {
     return false;

@@ -7,22 +7,15 @@ export async function GET(request: NextRequest) {
   try {
     const id: any = request.url.split("/").pop();
 
-    // Menunggu kedua data siap sebelum dilakukan merger
-    const [data, dataRealtime] = await Promise.all([getDataByField("farms", "user_id", id), getDataRealtime("data")]);
+    const data: any = await getDataByField("farms", "user_id", id);
 
-    // Melakukan merger data
-    const mergedData = data.map((farm: any) => {
-      if (dataRealtime[farm.id]) {
-        return {
-          ...farm,
-          ...dataRealtime[farm.id],
-        };
-      } else {
-        return farm;
-      }
-    });
+    const mergedData = await Promise.all(
+      data.map(async (farm: any) => {
+        const dataRealtime = await getDataRealtime(farm.id);
+        return { ...farm, ...dataRealtime };
+      })
+    );
 
-    // Mengembalikan response dengan data yang telah digabungkan
     return NextResponse.json(
       {
         success: true,
@@ -31,7 +24,6 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    // Jika terjadi error, mengembalikan response error
     return NextResponse.json(
       {
         success: false,
@@ -41,7 +33,6 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,12 +45,13 @@ export async function POST(request: NextRequest) {
 
       data["user_id"] = id;
 
-      const result: any = await addData("farms", data);
       const dataRealtime = {
-        humadity: 0,
         temperature: 0,
         ph: 0,
+        humadity: 0,
       };
+
+      const result: any = await addData("farms", data);
       const statusRealtime = await addDataRealtime(result.id, dataRealtime);
 
       if (result && statusRealtime) {

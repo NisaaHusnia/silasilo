@@ -7,6 +7,7 @@ const userPage = ["dashboard", "process", "result"];
 export default function withAuth(middleware: NextMiddleware, requireAuth: string[] = []) {
   return async (req: NextRequest, next: NextFetchEvent) => {
     const pathname = req.nextUrl.pathname.split("/")[1];
+    
     const token: any = await getToken({
       req,
       secret: process.env.NEXTAUTH_SECRET,
@@ -18,7 +19,7 @@ export default function withAuth(middleware: NextMiddleware, requireAuth: string
           return NextResponse.redirect(new URL("/dashboard", req.url));
         }
 
-        if (token.golongan === "5" && userPage.includes(pathname)) {
+        if (!userPage.includes(pathname)) {
           return NextResponse.redirect(new URL("/dashboard", req.url));
         }
       } else {

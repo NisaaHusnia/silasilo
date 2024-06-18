@@ -1,3 +1,6 @@
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { addData, getDataByField } from "@/lib/firebase/service";
@@ -15,6 +18,9 @@ export async function GET(request: NextRequest) {
         return { ...farm, ...dataRealtime };
       })
     );
+
+    // Simulasi penundaan selama 10 detik
+    // await new Promise((resolve) => setTimeout(resolve, 10000));
 
     return NextResponse.json(
       {

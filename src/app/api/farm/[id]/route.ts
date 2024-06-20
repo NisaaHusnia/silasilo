@@ -1,16 +1,11 @@
-export const maxDuration = 60;
-export const dynamic = "force-dynamic";
-
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { addData, getDataByField } from "@/lib/firebase/service";
 import { addDataRealtime, getDataRealtime } from "@/lib/firebase/serviceRealtime";
 
-export async function GET(request: NextRequest) {
+export async function GET({ params }: { params: { id: string } }) {
   try {
-    const id: any = request.url.split("/").pop();
-
-    const data: any = await getDataByField("farms", "user_id", id);
+    const data: any = await getDataByField("farms", "user_id", params.id);
 
     const mergedData = await Promise.all(
       data.map(async (farm: any) => {
@@ -18,9 +13,6 @@ export async function GET(request: NextRequest) {
         return { ...farm, ...dataRealtime };
       })
     );
-
-    // Simulasi penundaan selama 10 detik
-    // await new Promise((resolve) => setTimeout(resolve, 10000));
 
     return NextResponse.json(
       {
@@ -40,16 +32,15 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const token: any = request.headers.get("authorization")?.split(" ")[1];
     const decoded: any = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
-    const id: any = request.url.split("/").pop();
 
     if (decoded) {
       const data = await request.json();
 
-      data["user_id"] = id;
+      data["user_id"] = params.id;
 
       const dataRealtime = {
         temperature: 0,

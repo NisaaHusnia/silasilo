@@ -12,9 +12,13 @@ import { useSession } from "next-auth/react";
 const DashboardPage = () => {
   const session: any = useSession();
 
+  
   // Panggil useSWR di luar kondisi apapun
-  const id = session?.data?.user?.id;
-  const { data, error, isLoading } = useSWR(id ? `/api/farm/${id}` : null, fetcher);
+  const token: any = session.data?.token;
+  const fetchWithToken = (url: string) => {
+    return fetcher(url, token);
+  };
+  const { data, error, isLoading } = useSWR(token ? `/api/farm` : null, fetchWithToken);
 
   if (session.status === "loading" || isLoading) {
     return (
@@ -33,7 +37,7 @@ const DashboardPage = () => {
   }
 
   if (!isLoading) {
-    if (data?.data.length > 0) {
+    if (data?.data?.length > 0) {
       return <DashboardView data={data?.data} />;
     } else {
       return (

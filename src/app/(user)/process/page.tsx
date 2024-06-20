@@ -45,12 +45,11 @@ const ProcessPage = () => {
     );
   }
   const token: any = session.data?.token;
-  const id: any = session.data?.user.id;
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
     try {
-      const response = await farmInstance.add(data, token, id);
+      const response = await farmInstance.add(data, token);
       successAlert(response.data.message);
     } catch {
       errorAlert("Internal Server Error");

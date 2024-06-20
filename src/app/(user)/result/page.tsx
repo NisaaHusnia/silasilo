@@ -12,12 +12,15 @@ export default function ResultPage() {
   const session: any = useSession();
 
   // Panggil useSWR di luar kondisi apapun
-  const id = session?.data?.user?.id;
-  const { data, error, isLoading } = useSWR(id ? `/api/farm/${id}` : null, fetcher);
+  const token: any = session.data?.token;
+  const fetchWithToken = (url: string) => {
+    return fetcher(url, token);
+  };
+  const { data, error, isLoading } = useSWR(token ? `/api/farm` : null, fetchWithToken);
 
-  data?.data.map((item: any) => {
-    item['grade'] = getGrade(item.ph);
-  })
+  data?.data?.map((item: any) => {
+    item["grade"] = getGrade(item.ph);
+  });
 
   if (session.status === "loading" || isLoading) {
     return (
@@ -26,7 +29,7 @@ export default function ResultPage() {
       </div>
     );
   }
-  
+
   return isLoading ? (
     <div className="flex justify-center items-center h-screen">
       <Loader2 className="w-8 h-8 animate-spin" />

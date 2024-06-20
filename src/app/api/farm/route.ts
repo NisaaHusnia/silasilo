@@ -3,9 +3,12 @@ import jwt from "jsonwebtoken";
 import { addData, getDataByField } from "@/lib/firebase/service";
 import { addDataRealtime, getDataRealtime } from "@/lib/firebase/serviceRealtime";
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
   try {
-    const data: any = await getDataByField("farms", "user_id", params.id);
+    const token: any = request.headers.get("authorization")?.split(" ")[1];
+    const decoded: any = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
+
+    const data: any = await getDataByField("farms", "user_id", decoded.id);
 
     const mergedData = await Promise.all(
       data.map(async (farm: any) => {
@@ -32,7 +35,7 @@ export async function GET({ params }: { params: { id: string } }) {
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest) {
   try {
     const token: any = request.headers.get("authorization")?.split(" ")[1];
     const decoded: any = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     if (decoded) {
       const data = await request.json();
 
-      data["user_id"] = params.id;
+      data["user_id"] = decoded.id;
 
       const dataRealtime = {
         temperature: 0,

@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import bcrypt from "bcrypt";
 import { getDataByField, addData } from "@/lib/firebase/service";
 import { NextResponse, NextRequest } from "next/server";

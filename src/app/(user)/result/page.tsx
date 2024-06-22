@@ -19,8 +19,12 @@ export default function ResultPage() {
   const { data, error, isLoading } = useSWR(token ? `/api/farm` : null, fetchWithToken);
 
   data?.data?.map((item: any) => {
-    item["grade"] = getGrade(item.ph);
+    // Mengkonversi item.ph ke angka jika tidak null atau undefined, atau memberikan nilai default (misalnya 0)
+    const phValue = parseFloat(item.ph);
+    item["grade"] = getGrade(phValue);
+    item["ph"] = !isNaN(phValue) ? phValue.toFixed(2) : "N/A"; // Atau bisa menggunakan nilai default lain
   });
+  
 
   if (session.status === "loading" || isLoading) {
     return (

@@ -12,14 +12,13 @@ import { useSession } from "next-auth/react";
 const DashboardPage = () => {
   const session: any = useSession();
 
-  
   // Panggil useSWR di luar kondisi apapun
   const token: any = session.data?.token;
   const fetchWithToken = (url: string) => {
     return fetcher(url, token);
   };
   const { data, error, isLoading } = useSWR(token ? `/api/farm` : null, fetchWithToken);
-console.log(data)
+
   if (session.status === "loading" || isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">

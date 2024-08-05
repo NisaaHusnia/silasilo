@@ -29,8 +29,8 @@ const ProcessPage = () => {
     defaultValues: {
       farm_name: "",
       location: "",
-      creation_date: "",
-      creation_time: "",
+      creation_date: new Date().toISOString().slice(0, 10),
+      creation_time: new Date().toLocaleTimeString([],{ hour: '2-digit', minute: '2-digit' }),
       material: "bongkil jagung",
     },
   });
@@ -48,6 +48,7 @@ const ProcessPage = () => {
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
+    
     try {
       const response = await farmInstance.add(data, token);
       successAlert(response.data.message);

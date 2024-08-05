@@ -9,14 +9,14 @@ export async function GET(request: NextRequest) {
     const decoded: any = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
 
     const data: any = await getDataByField("farms", "user_id", decoded.id);
-console.log(data)
+
     const mergedData = await Promise.all(
       data.map(async (farm: any) => {
         const dataRealtime = await getDataRealtime(farm.id);
         return { ...farm, ...dataRealtime };
       })
     );
-console.log(mergedData)
+
     return NextResponse.json(
       {
         success: true,

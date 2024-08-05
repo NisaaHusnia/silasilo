@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import logoImage from "../../public/images/silasilo.png";
@@ -14,7 +13,7 @@ export default function Home() {
         </div>
         <div className="hidden md:flex gap-8 items-center">
           <Link href="/">
-            <button className="text-3xl font-semibold">HOME</button>
+            <button className="text-3xl font-semibold text-black">HOME</button>
           </Link>
           <Link href="/auth/login">
             <button className="text-3xl font-semibold">LOGIN</button>
@@ -34,10 +33,10 @@ export default function Home() {
           </div>
           <div className="flex gap-4">
             <Link href="/auth/login">
-              <Button className="bg-secondary text-black rounded-2xl md:text-xl font-bold py-4 px-6">LOGIN</Button>
+              <button className="bg-secondary text-black rounded-3xl md:text-xl font-bold py-4 px-6">LOGIN</button>
             </Link>
-            <Link href="/auth/register" target="_blank">
-              <Button className="bg-secondary text-black rounded-2xl md:text-xl font-bold py-4 px-6">REGISTER</Button>
+            <Link href="/auth/register">
+              <button className="bg-secondary text-black rounded-3xl md:text-xl font-bold py-4 px-6">REGISTER</button>
             </Link>
           </div>
         </div>

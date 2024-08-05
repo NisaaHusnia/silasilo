@@ -24,7 +24,7 @@ const DashboardView = ({ data }: any) => {
               <Item>Bahan baku : {item.material}</Item>
               <Item>Suhu : {item.temperature}</Item>
               <Item>Kelembapan : {item.humadity}</Item>
-              <Item>Nilai pH : {item.ph.toFixed(2)}</Item>
+              <Item>Nilai pH : {item?.ph?.toFixed(2)||""}</Item>
             </CardContent>
             <CardFooter>
               <Item>ID : {item.id}</Item>

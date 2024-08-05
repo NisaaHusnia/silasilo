@@ -36,9 +36,9 @@ export default function Home() {
             <Link href="/auth/login">
               <Button className="bg-secondary text-black rounded-2xl md:text-xl font-bold py-4 px-6">LOGIN</Button>
             </Link>
-            <Link href="https://youtube.com/@silasesentry?si=P09dC3WH03XS2Qne" target="_blank">
+            {/* <Link href="https://youtube.com/@silasesentry?si=P09dC3WH03XS2Qne" target="_blank">
               <Button className="bg-secondary text-black rounded-2xl md:text-xl font-bold py-4 px-6">YOUTUBE</Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className="hidden md:block w-1/3">

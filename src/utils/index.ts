@@ -5,7 +5,7 @@ export const getGrade = (ph: number) => {
     } else if (ph < 5.5) {
       return "B (Sedang)";
     } else if (ph <= 8) {
-      return "C (Rendah)";
+      return "C (Rendah)";-
     } else {
       return "-";
     }

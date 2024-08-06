@@ -53,6 +53,8 @@ export async function POST(request: NextRequest) {
 
       const result: any = await addData("farms", data);
       const statusRealtime = await addDataRealtime(result.id, dataRealtime);
+      
+
 
       if (result && statusRealtime) {
         return NextResponse.json(
